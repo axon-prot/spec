@@ -1,0 +1,27 @@
+{
+  "id": "L1-002",
+  "level": 1,
+  "description": "A packet with a mismatched major VERSION MUST produce ERROR 0x0001 (version mismatch)",
+  "normative_ref": "spec/01-packet-structure.md § VERSION",
+  "steps": [
+    {
+      "action": "send",
+      "signal": "HANDSHAKE",
+      "_session_id": "random",
+      "_version": [99, 0],
+      "_ctx_ref": 0,
+      "payload": {
+        "namespace": "org.axon.conformance",
+        "codec": "json",
+        "compression": "none"
+      },
+      "comment": "Version 99.0 is incompatible; receiver must reject it."
+    },
+    {
+      "action": "expect",
+      "signal": "ERROR",
+      "error_code": "0x0001",
+      "timeout_ms": 3000
+    }
+  ]
+}
