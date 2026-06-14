@@ -1,0 +1,24 @@
+{
+  "id": "L1-016",
+  "level": 1,
+  "description": "A PUSH with a relative STALE_AT of 0ms MUST be silently discarded immediately on receipt",
+  "normative_ref": "spec/04-semantic-expiry.md § Expiry Types (01 — Relative Offset)",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "PUSH",
+      "flags": ["REQUIRES_ACK"],
+      "payload": { "value": "instant-expiry" },
+      "_stale_at": { "type": "relative", "ms": 0 },
+      "comment": "STALE_AT type=01, value=0ms. absolute_expiry = received_at + 0 = received_at; now_ms >= received_at is immediately true."
+    },
+    {
+      "action": "expect_silence",
+      "timeout_ms": 600,
+      "comment": "A NUDGE MUST NOT be sent; the packet is expired on arrival."
+    }
+  ]
+}
