@@ -1,0 +1,27 @@
+{
+  "id": "L3-001",
+  "level": 3,
+  "description": "A SYNC whose digest differs from the implementation's own root MUST trigger a counter-SYNC response",
+  "normative_ref": "spec/02-signals.md § SYNC",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "SYNC",
+      "payload": {
+        "digest": "deadbeefcafebabe",
+        "namespace": "org.axon.conformance",
+        "depth": 3
+      },
+      "comment": "0xDEADBEEFCAFEBABE is extremely unlikely to be the implementation's actual Merkle root."
+    },
+    {
+      "action": "expect",
+      "signal": "SYNC",
+      "timeout_ms": 3000,
+      "comment": "When digests differ, the receiver MUST send its own SYNC in response (spec §SYNC). If digests somehow matched, the test would see silence and fail — acceptable because 0xDEADBEEFCAFEBABE matching is negligibly probable."
+    }
+  ]
+}
