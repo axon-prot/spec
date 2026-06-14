@@ -1,0 +1,24 @@
+{
+  "id": "L1-008",
+  "level": 1,
+  "description": "A packet referencing an unknown CTX_REF MUST produce ERROR 0x0004 (invalid context bundle reference)",
+  "normative_ref": "spec/01-packet-structure.md § CTX_REF",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "PUSH",
+      "_ctx_ref": 3735928559,
+      "payload": { "value": "hello" },
+      "comment": "CTX_REF 0xDEADBEEF is not a handle the implementation issued."
+    },
+    {
+      "action": "expect",
+      "signal": "ERROR",
+      "error_code": "0x0004",
+      "timeout_ms": 3000
+    }
+  ]
+}
