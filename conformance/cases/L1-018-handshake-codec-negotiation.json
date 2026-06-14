@@ -1,0 +1,24 @@
+{
+  "id": "L1-018",
+  "level": 1,
+  "description": "If a responder cannot accept the proposed codec it SHOULD counter-propose; the initiator MUST accept or the responder MUST send ERROR after the second proposal",
+  "normative_ref": "spec/02-signals.md § HANDSHAKE_ACK; spec/05-context-bundles.md § Negotiation",
+  "notes": "The runner proposes 'flatbuffers', which many implementations will counter-propose. If the implementation accepts flatbuffers, the test passes immediately. If it counter-proposes, the runner accepts the revised parameters and verifies a session is established.",
+  "steps": [
+    {
+      "action": "establish_session",
+      "codec": "flatbuffers",
+      "compression": "none",
+      "comment": "Propose an uncommon codec; the implementation may counter-propose 'json' or another supported codec."
+    },
+    {
+      "action": "send",
+      "signal": "NUDGE",
+      "comment": "Confirm the session is ACTIVE regardless of which codec was ultimately negotiated."
+    },
+    {
+      "action": "expect_silence",
+      "timeout_ms": 400
+    }
+  ]
+}
