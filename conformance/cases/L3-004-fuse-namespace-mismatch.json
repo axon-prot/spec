@@ -1,0 +1,39 @@
+{
+  "id": "L3-004",
+  "level": 3,
+  "description": "A FUSE between sessions with different namespaces MUST be rejected with ERROR 0x0007 (FUSE target session not found or not ACTIVE)",
+  "normative_ref": "spec/05-context-bundles.md § Fused Sessions; spec/02-signals.md § FUSE",
+  "steps": [
+    {
+      "action": "establish_session",
+      "namespace": "org.axon.conformance.ns-alpha",
+      "as": "sess_a",
+      "comment": "Session A in namespace ns-alpha."
+    },
+    {
+      "action": "open_connection",
+      "as": "conn_b"
+    },
+    {
+      "action": "establish_session",
+      "connection": "conn_b",
+      "namespace": "org.axon.conformance.ns-beta",
+      "as": "sess_b",
+      "comment": "Session B in a different namespace (ns-beta). A FUSE MUST be rejected."
+    },
+    {
+      "action": "send",
+      "signal": "FUSE",
+      "payload": {
+        "target_session_id": "$sess_b_session_id_str"
+      }
+    },
+    {
+      "action": "expect",
+      "signal": "ERROR",
+      "error_code": "0x0007",
+      "timeout_ms": 3000,
+      "comment": "Namespace mismatch MUST be rejected with ERROR 0x0007 (spec §Fused Sessions)."
+    }
+  ]
+}
