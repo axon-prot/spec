@@ -1,0 +1,28 @@
+{
+  "id": "L1-007",
+  "level": 1,
+  "description": "The ctx_ref issued in HANDSHAKE_ACK MUST be a non-zero uint32; 0x00000000 is reserved",
+  "normative_ref": "spec/02-signals.md § HANDSHAKE_ACK; spec/05-context-bundles.md § The ctx_ref Handle",
+  "steps": [
+    {
+      "action": "send",
+      "signal": "HANDSHAKE",
+      "_session_id": "random",
+      "_ctx_ref": 0,
+      "payload": {
+        "namespace": "org.axon.conformance",
+        "codec": "json",
+        "compression": "none"
+      }
+    },
+    {
+      "action": "expect",
+      "signal": "HANDSHAKE_ACK",
+      "timeout_ms": 3000,
+      "assert": {
+        "payload_json.ctx_ref": { "nonzero": true }
+      },
+      "comment": "A CTX_REF of 0x00000000 MUST NOT be issued by a server (spec §CTX_REF)."
+    }
+  ]
+}
