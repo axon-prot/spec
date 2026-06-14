@@ -1,0 +1,30 @@
+{
+  "id": "L2-002",
+  "level": 2,
+  "description": "PROBE_ACK MUST include at least the 'codecs' and 'version' fields",
+  "normative_ref": "spec/02-signals.md § PROBE_ACK; spec/06-implementation-guide.md § Level 2 — Standard",
+  "steps": [
+    {
+      "action": "send",
+      "signal": "PROBE",
+      "_session_id": "random",
+      "_ctx_ref": 0,
+      "payload": {
+        "codecs": ["json"],
+        "compression": ["none"],
+        "latency_class": "interactive",
+        "version": "1.0.0"
+      }
+    },
+    {
+      "action": "expect",
+      "signal": "PROBE_ACK",
+      "timeout_ms": 3000,
+      "assert": {
+        "payload_json.codecs":  { "nonzero": true },
+        "payload_json.version": { "nonzero": true }
+      },
+      "comment": "Level 2 implementations MUST include at least 'provides', 'codecs', and 'version' in PROBE_ACK."
+    }
+  ]
+}
