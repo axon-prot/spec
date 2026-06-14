@@ -1,0 +1,28 @@
+{
+  "id": "L2-001",
+  "level": 2,
+  "description": "A PROBE MUST produce a PROBE_ACK from any peer that satisfies the requested capabilities",
+  "normative_ref": "spec/02-signals.md § PROBE, PROBE_ACK",
+  "notes": "This test sends a PROBE with no 'consumes' requirements so that any implementation MUST respond. If an implementation has no capabilities to advertise, it may omit provides; the key assertion is that PROBE_ACK is received.",
+  "steps": [
+    {
+      "action": "send",
+      "signal": "PROBE",
+      "_session_id": "random",
+      "_ctx_ref": 0,
+      "payload": {
+        "codecs": ["json", "msgpack", "cbor", "protobuf", "flatbuffers", "binary"],
+        "compression": ["lz4", "zstd", "brotli", "none"],
+        "latency_class": "interactive",
+        "version": "1.0.0"
+      },
+      "comment": "No 'consumes' field — this node is happy to connect with any peer."
+    },
+    {
+      "action": "expect",
+      "signal": "PROBE_ACK",
+      "timeout_ms": 3000,
+      "comment": "The implementation MUST respond with its capability advertisement."
+    }
+  ]
+}
