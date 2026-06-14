@@ -133,7 +133,7 @@ Confirms graceful termination. After sending or receiving RELEASE_ACK, the SESSI
 
 Transmits data to the peer. The PAYLOAD is encoded in the negotiated codec. If the `REQUIRES_ACK` flag is set, the sender MUST wait for acknowledgment via NUDGE or a piggybacked sequence field before considering the packet delivered.
 
-The `HAS_STALE_AT` flag MAY be set to indicate semantic expiry. See Semantic Expiry.
+The `HAS_STALE_AT` flag MAY be set to indicate semantic expiry. See [Semantic Expiry](https://github.com/axon-prot/spec/blob/master/spec/04-semantic-expiry.md).
 
 **Payload:** Application-defined data. No envelope required.
 

@@ -46,7 +46,7 @@ Current version: `0x01 0x00` (v1.0).
 
 ### FLAGS
 
-A 16-bit big-endian bitfield. See [FLAGS Breakdown](#flags-breakdown) below.
+A 16-bit big-endian bitfield. See [FLAGS Breakdown](https://github.com/axon-prot/spec/blob/master/spec/01-packet-structure.md#flags-breakdown) below.
 
 ### SESSION_ID
 
@@ -56,7 +56,7 @@ Stateless intermediary relay nodes MUST use SESSION_ID as the sole routing key. 
 
 ### SIGNAL
 
-A single byte identifying the signal type. See Signal Reference for all valid codes.
+A single byte identifying the signal type. See [Signal Reference](https://github.com/axon-prot/spec/blob/master/spec/02-signals.md) for all valid codes.
 
 Receivers encountering an unknown signal code MUST respond with an ERROR signal (code `0x0002`). Unknown signals MUST NOT be silently dropped.
 
@@ -82,7 +82,7 @@ If a receiver receives a packet with an unknown CTX_REF, it MUST respond with an
 
 ### STALE_AT (conditional)
 
-Present only when the `HAS_STALE_AT` flag (bit 2) is set. A 64-bit big-endian unsigned integer encoding a semantic expiry value. See Semantic Expiry for full encoding details.
+Present only when the `HAS_STALE_AT` flag (bit 2) is set. A 64-bit big-endian unsigned integer encoding a semantic expiry value. See [Semantic Expiry](https://github.com/axon-prot/spec/blob/master/spec/04-semantic-expiry.md) for full encoding details.
 
 ### PAYLOAD_LEN
 
