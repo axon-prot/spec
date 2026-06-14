@@ -1,0 +1,25 @@
+{
+  "id": "L1-017",
+  "level": 1,
+  "description": "A PUSH with a long relative STALE_AT MUST be processed; NUDGE MUST be sent when REQUIRES_ACK is set",
+  "normative_ref": "spec/04-semantic-expiry.md § Expiry Types (01 — Relative Offset)",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "PUSH",
+      "flags": ["REQUIRES_ACK"],
+      "payload": { "value": "long-ttl" },
+      "_stale_at": { "type": "relative", "ms": 3600000 },
+      "comment": "STALE_AT type=01, value=3600000ms (1 hour). The packet is not yet stale during the test."
+    },
+    {
+      "action": "expect",
+      "signal": "NUDGE",
+      "assert_seq_ack": true,
+      "timeout_ms": 3000
+    }
+  ]
+}
