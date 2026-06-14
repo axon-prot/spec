@@ -1,0 +1,37 @@
+{
+  "id": "L3-002",
+  "level": 3,
+  "description": "PUSH and PULL signals received while a SYNC is in progress MUST be queued and processed after reconciliation, not dropped or rejected with ERROR 0x0006",
+  "normative_ref": "spec/02-signals.md § SYNC; spec/03-session-lifecycle.md § SYNCING State Detail",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "SYNC",
+      "payload": {
+        "digest": "aabbccddeeff0011",
+        "namespace": "org.axon.conformance",
+        "depth": 1
+      },
+      "comment": "Trigger SYNCING state on the implementation."
+    },
+    {
+      "action": "send",
+      "signal": "PUSH",
+      "flags": ["REQUIRES_ACK"],
+      "payload": { "queued": true },
+      "comment": "Sent while the implementation is in SYNCING. MUST be queued, not dropped or rejected."
+    },
+    {
+      "action": "expect",
+      "signal": "*",
+      "timeout_ms": 5000,
+      "assert": {
+        "signal": { "not": 255 }
+      },
+      "comment": "Expect either a counter-SYNC (if digests differ) or a NUDGE for the queued PUSH (if sync completes quickly). Either way, no ERROR 0x0006."
+    }
+  ]
+}
