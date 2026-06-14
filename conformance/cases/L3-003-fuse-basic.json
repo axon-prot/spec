@@ -1,0 +1,41 @@
+{
+  "id": "L3-003",
+  "level": 3,
+  "description": "FUSE on two ACTIVE sessions with the same namespace MUST produce FUSE_ACK with a new non-zero ctx_ref for the merged context",
+  "normative_ref": "spec/02-signals.md § FUSE, FUSE_ACK; spec/05-context-bundles.md § Fused Sessions",
+  "steps": [
+    {
+      "action": "establish_session",
+      "as": "sess_a",
+      "comment": "Open session A (default connection)."
+    },
+    {
+      "action": "open_connection",
+      "as": "conn_b",
+      "comment": "Open a second transport connection to the implementation."
+    },
+    {
+      "action": "establish_session",
+      "connection": "conn_b",
+      "as": "sess_b",
+      "comment": "Establish session B with the same namespace on the second connection."
+    },
+    {
+      "action": "send",
+      "signal": "FUSE",
+      "payload": {
+        "target_session_id": "$sess_b_session_id_str"
+      },
+      "comment": "Initiate FUSE from session A, targeting session B's UUID."
+    },
+    {
+      "action": "expect",
+      "signal": "FUSE_ACK",
+      "timeout_ms": 3000,
+      "assert": {
+        "payload_json.ctx_ref": { "nonzero": true }
+      },
+      "comment": "FUSE_ACK MUST contain a new non-zero ctx_ref for the merged context."
+    }
+  ]
+}
