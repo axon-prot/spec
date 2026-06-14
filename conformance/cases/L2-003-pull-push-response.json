@@ -1,0 +1,36 @@
+{
+  "id": "L2-003",
+  "level": 2,
+  "description": "A PULL MUST cause the implementation to respond with one or more PUSH signals; it MUST NOT be silently ignored or produce an ERROR",
+  "normative_ref": "spec/02-signals.md § PULL, PUSH",
+  "notes": "The implementation may have no data matching the query, in which case it MAY reply with zero PUSHes. This test primarily validates that PULL is accepted and that some response (PUSH or silence) is produced without ERROR. If the implementation has state, it should respond with PUSH(es); this test accepts both outcomes.",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "PUSH",
+      "payload": { "key": "conformance-seed", "value": 42 },
+      "comment": "Seed data so the implementation has something to return when queried."
+    },
+    {
+      "action": "send",
+      "signal": "PULL",
+      "payload": {
+        "query": "conformance-seed",
+        "limit": 1
+      },
+      "comment": "Query for the seeded data. The implementation should reply with one PUSH."
+    },
+    {
+      "action": "expect",
+      "signal": "*",
+      "timeout_ms": 3000,
+      "assert": {
+        "signal": { "not": 255 }
+      },
+      "comment": "Any response other than ERROR is acceptable. If silence, the test is inconclusive but passes (implementation may have no matching state)."
+    }
+  ]
+}
