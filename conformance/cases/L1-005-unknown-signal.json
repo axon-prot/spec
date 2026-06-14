@@ -1,0 +1,22 @@
+{
+  "id": "L1-005",
+  "level": 1,
+  "description": "An unknown signal code MUST produce ERROR 0x0002; unknown signals MUST NOT be silently dropped",
+  "normative_ref": "spec/01-packet-structure.md § SIGNAL; spec/02-signals.md",
+  "steps": [
+    {
+      "action": "send",
+      "signal": 66,
+      "_session_id": "random",
+      "_ctx_ref": 0,
+      "payload": null,
+      "comment": "Signal 0x42 is not defined in the AXON spec and must be rejected."
+    },
+    {
+      "action": "expect",
+      "signal": "ERROR",
+      "error_code": "0x0002",
+      "timeout_ms": 3000
+    }
+  ]
+}
