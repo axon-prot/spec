@@ -1,0 +1,30 @@
+{
+  "id": "L2-004",
+  "level": 2,
+  "description": "REVOKE of a sequence that has not yet been processed MUST cause that packet to be discarded; if REQUIRES_ACK was set, the suppressed NUDGE confirms discard",
+  "normative_ref": "spec/02-signals.md § REVOKE; spec/06-implementation-guide.md § Level 2",
+  "notes": "This test relies on the implementation not sending a NUDGE before it has processed the REVOKE. It sends REVOKE immediately after PUSH+REQUIRES_ACK on the assumption that single-threaded implementations process packets in order. Timing-sensitive: a parallel-processing implementation may already have queued the NUDGE.",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "PUSH",
+      "flags": ["REQUIRES_ACK"],
+      "payload": { "revoke-me": true },
+      "comment": "Sequence 2 in this session (1 = HANDSHAKE)."
+    },
+    {
+      "action": "send",
+      "signal": "REVOKE",
+      "payload": { "seq_ref": 2, "reason": "conformance-revoke-test" },
+      "comment": "Sent immediately after PUSH, before the implementation can process the PUSH."
+    },
+    {
+      "action": "expect_silence",
+      "timeout_ms": 700,
+      "comment": "No NUDGE MUST arrive. REVOKE discards the PUSH so no acknowledgement is due."
+    }
+  ]
+}
