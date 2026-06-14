@@ -1,0 +1,18 @@
+{
+  "id": "L1-001",
+  "level": 1,
+  "description": "Packets with invalid MAGIC bytes MUST be silently dropped without an ERROR response",
+  "normative_ref": "spec/01-packet-structure.md § MAGIC",
+  "steps": [
+    {
+      "action": "send_raw",
+      "comment": "48-byte packet whose first four bytes are 'BAAD' instead of 'AXON'; otherwise structurally valid.",
+      "data": "424141440100000000000000000000000000000000000000030000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "action": "expect_silence",
+      "timeout_ms": 600,
+      "comment": "An ERROR response MUST NOT be sent for non-AXON traffic (spec §MAGIC)."
+    }
+  ]
+}
