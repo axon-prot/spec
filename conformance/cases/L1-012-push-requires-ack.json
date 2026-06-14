@@ -1,0 +1,25 @@
+{
+  "id": "L1-012",
+  "level": 1,
+  "description": "A PUSH with REQUIRES_ACK set MUST be acknowledged via NUDGE with seq_ack matching the PUSH sequence number",
+  "normative_ref": "spec/01-packet-structure.md § FLAGS (REQUIRES_ACK); spec/02-signals.md § PUSH, NUDGE",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "PUSH",
+      "flags": ["REQUIRES_ACK"],
+      "payload": { "sensor": "T1", "temp": 22.7 },
+      "comment": "REQUIRES_ACK flag is set; the implementation MUST reply with NUDGE."
+    },
+    {
+      "action": "expect",
+      "signal": "NUDGE",
+      "assert_seq_ack": true,
+      "timeout_ms": 3000,
+      "comment": "NUDGE.seq_ack MUST equal the sequence number of the acknowledged PUSH."
+    }
+  ]
+}
