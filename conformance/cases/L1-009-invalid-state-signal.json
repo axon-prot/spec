@@ -1,0 +1,22 @@
+{
+  "id": "L1-009",
+  "level": 1,
+  "description": "A signal that is not valid in the current session state MUST produce ERROR 0x0006 (invalid state)",
+  "normative_ref": "spec/03-session-lifecycle.md; spec/02-signals.md",
+  "steps": [
+    {
+      "action": "send",
+      "signal": "HANDSHAKE_ACK",
+      "_session_id": "random",
+      "_ctx_ref": 42,
+      "payload": { "ctx_ref": 42, "codec": "json", "compression": "none" },
+      "comment": "Sending HANDSHAKE_ACK without a prior HANDSHAKE. The implementation is in DORMANT state; HANDSHAKE_ACK is only valid in NEGOTIATING."
+    },
+    {
+      "action": "expect",
+      "signal": "ERROR",
+      "error_code": "0x0006",
+      "timeout_ms": 3000
+    }
+  ]
+}
