@@ -1,0 +1,24 @@
+{
+  "id": "L1-006",
+  "level": 1,
+  "description": "A well-formed HANDSHAKE MUST be answered with HANDSHAKE_ACK, establishing a session",
+  "normative_ref": "spec/02-signals.md § HANDSHAKE, HANDSHAKE_ACK; spec/03-session-lifecycle.md",
+  "steps": [
+    {
+      "action": "establish_session",
+      "namespace": "org.axon.conformance",
+      "codec": "json",
+      "compression": "none"
+    },
+    {
+      "action": "send",
+      "signal": "NUDGE",
+      "comment": "Send NUDGE to confirm the session is ACTIVE after HANDSHAKE_ACK."
+    },
+    {
+      "action": "expect_silence",
+      "timeout_ms": 400,
+      "comment": "NUDGE produces no response; silence confirms the session is healthy."
+    }
+  ]
+}
