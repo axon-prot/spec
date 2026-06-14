@@ -1,0 +1,20 @@
+{
+  "id": "L1-013",
+  "level": 1,
+  "description": "A NUDGE sent as a keepalive (empty payload) MUST NOT produce any response from the implementation",
+  "normative_ref": "spec/02-signals.md § NUDGE",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "NUDGE",
+      "comment": "A NUDGE with no payload is a pure keepalive. Expected response: none."
+    },
+    {
+      "action": "expect_silence",
+      "timeout_ms": 500
+    }
+  ]
+}
