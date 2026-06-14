@@ -1,0 +1,16 @@
+{
+  "id": "L1-010",
+  "level": 1,
+  "description": "RELEASE MUST be answered with RELEASE_ACK, after which the session handle is freed",
+  "normative_ref": "spec/02-signals.md § RELEASE, RELEASE_ACK; spec/03-session-lifecycle.md",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "release_session",
+      "reason_code": "0x00",
+      "comment": "Initiates graceful termination with 'Normal termination' reason."
+    }
+  ]
+}
