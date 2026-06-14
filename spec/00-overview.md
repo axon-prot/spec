@@ -2,7 +2,7 @@
 
 Welcome to the AXON Protocol documentation. This wiki covers the normative specification, implementation guidance, and reference material for the AXON binary transport protocol.
 
-For a high-level overview, start with the README. For everything else, use the index below.
+For a high-level overview, start with the [README](https://github.com/axon-prot/spec/blob/master/README.md). For everything else, use the index below.
 
 ---
 
@@ -70,3 +70,9 @@ These pages are normative. Language follows RFC conventions: **MUST** / **MUST N
 | 0x0005 | Malformed packet (checksum failure or truncated header) |
 | 0x0006 | Signal not valid in current session state |
 | 0x0007 | FUSE target session not found |
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/axon-prot/spec/blob/master/CONTRIBUTING.md) for how to propose spec changes, add conformance test cases, or improve this documentation.
