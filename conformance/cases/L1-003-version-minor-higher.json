@@ -1,0 +1,27 @@
+{
+  "id": "L1-003",
+  "level": 1,
+  "description": "A higher minor version from the peer MUST be tolerated; the session MUST proceed without ERROR",
+  "normative_ref": "spec/01-packet-structure.md § VERSION",
+  "steps": [
+    {
+      "action": "send",
+      "signal": "HANDSHAKE",
+      "_session_id": "random",
+      "_version": [1, 99],
+      "_ctx_ref": 0,
+      "payload": {
+        "namespace": "org.axon.conformance",
+        "codec": "json",
+        "compression": "none"
+      },
+      "comment": "Version 1.99 — same major, higher minor. Receivers SHOULD tolerate this gracefully."
+    },
+    {
+      "action": "expect",
+      "signal": "HANDSHAKE_ACK",
+      "timeout_ms": 3000,
+      "comment": "Must not reply with ERROR 0x0001 for a minor version difference."
+    }
+  ]
+}
