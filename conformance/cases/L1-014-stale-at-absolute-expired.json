@@ -1,0 +1,24 @@
+{
+  "id": "L1-014",
+  "level": 1,
+  "description": "A PUSH whose absolute STALE_AT has already passed MUST be silently discarded; no NUDGE MUST be sent even when REQUIRES_ACK is set",
+  "normative_ref": "spec/04-semantic-expiry.md § Expiry Types (00 — Absolute Timestamp); Receiver Behaviour",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "PUSH",
+      "flags": ["REQUIRES_ACK"],
+      "payload": { "value": "expired" },
+      "_stale_at": { "type": "absolute", "expired": true },
+      "comment": "STALE_AT type=00, value=0 (Unix epoch). now_ms >= 0 is always true, so the packet is always stale."
+    },
+    {
+      "action": "expect_silence",
+      "timeout_ms": 600,
+      "comment": "Discarding MUST be silent — no ERROR, no NUDGE (spec §Receiver Behaviour)."
+    }
+  ]
+}
