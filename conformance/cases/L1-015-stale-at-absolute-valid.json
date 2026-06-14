@@ -1,0 +1,26 @@
+{
+  "id": "L1-015",
+  "level": 1,
+  "description": "A PUSH with a future absolute STALE_AT MUST be processed; NUDGE MUST be sent when REQUIRES_ACK is set",
+  "normative_ref": "spec/04-semantic-expiry.md § Expiry Types (00 — Absolute Timestamp)",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "PUSH",
+      "flags": ["REQUIRES_ACK"],
+      "payload": { "value": "valid" },
+      "_stale_at": { "type": "absolute", "expired": false },
+      "comment": "STALE_AT type=00, value = 100 years from now. The packet is not yet stale."
+    },
+    {
+      "action": "expect",
+      "signal": "NUDGE",
+      "assert_seq_ack": true,
+      "timeout_ms": 3000,
+      "comment": "A NUDGE MUST arrive because the PUSH was not stale and REQUIRES_ACK was set."
+    }
+  ]
+}
