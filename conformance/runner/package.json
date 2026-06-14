@@ -1,0 +1,17 @@
+{
+  "name": "axon-conformance-runner",
+  "version": "1.0.0",
+  "description": "Transport-agnostic conformance test runner for the AXON protocol specification",
+  "main": "index.js",
+  "bin": { "axon-conformance": "./index.js" },
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "minimist": "^1.2.8",
+    "ws": "^8.17.0",
+    "xxhash-wasm": "^1.1.0"
+  },
+  "engines": { "node": ">=18.0.0" },
+  "license": "MIT"
+}
