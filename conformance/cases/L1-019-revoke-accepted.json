@@ -1,0 +1,28 @@
+{
+  "id": "L1-019",
+  "level": 1,
+  "description": "A REVOKE targeting a prior PUSH sequence MUST be accepted silently; the implementation MUST NOT respond with ERROR",
+  "normative_ref": "spec/02-signals.md § REVOKE",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "PUSH",
+      "payload": { "value": "to-be-revoked" },
+      "comment": "Send a PUSH so there is a valid sequence number to REVOKE."
+    },
+    {
+      "action": "send",
+      "signal": "REVOKE",
+      "payload": { "seq_ref": 2, "reason": "conformance-test-revocation" },
+      "comment": "seq_ref=2 targets the PUSH sent above (sequence 2 in this session after HANDSHAKE was sequence 1)."
+    },
+    {
+      "action": "expect_silence",
+      "timeout_ms": 500,
+      "comment": "REVOKE MUST produce no response (spec §REVOKE: Expected response: None)."
+    }
+  ]
+}
