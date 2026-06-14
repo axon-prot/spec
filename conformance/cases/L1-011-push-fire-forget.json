@@ -1,0 +1,22 @@
+{
+  "id": "L1-011",
+  "level": 1,
+  "description": "A PUSH without REQUIRES_ACK is fire-and-forget; the implementation MUST NOT send a NUDGE",
+  "normative_ref": "spec/02-signals.md § PUSH",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "PUSH",
+      "payload": { "sensor": "T1", "temp": 22.4 },
+      "comment": "No REQUIRES_ACK flag. The implementation MUST deliver the payload without acknowledging."
+    },
+    {
+      "action": "expect_silence",
+      "timeout_ms": 500,
+      "comment": "Expected response is silence — not NUDGE, not ERROR."
+    }
+  ]
+}
