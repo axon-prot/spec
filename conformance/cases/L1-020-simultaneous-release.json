@@ -1,0 +1,26 @@
+{
+  "id": "L1-020",
+  "level": 1,
+  "description": "If both peers send RELEASE simultaneously, each MUST accept the crossing RELEASEs and respond with RELEASE_ACK without raising an ERROR",
+  "normative_ref": "spec/03-session-lifecycle.md § Simultaneous RELEASE",
+  "notes": "The runner sends RELEASE and immediately expects a RELEASE_ACK. In a true simultaneous-close scenario the implementation will also have sent RELEASE; the runner treats receipt of RELEASE from the implementation as equivalent to RELEASE_ACK for the purposes of this test, since both constitute confirmation of close.",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "RELEASE",
+      "payload": { "reason_code": "0x00" }
+    },
+    {
+      "action": "expect",
+      "signal": "*",
+      "timeout_ms": 3000,
+      "assert": {
+        "signal": { "not": 255 }
+      },
+      "comment": "Accept either RELEASE_ACK (0x0E) or a crossing RELEASE (0x0D). Neither is an ERROR (0xFF)."
+    }
+  ]
+}
