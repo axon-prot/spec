@@ -1,0 +1,37 @@
+{
+  "id": "L3-005",
+  "level": 3,
+  "description": "A PUSH with an event-hash STALE_AT MUST be silently discarded after a CAST to the matching topic is received; no NUDGE MUST be sent even with REQUIRES_ACK",
+  "normative_ref": "spec/04-semantic-expiry.md § Expiry Types (10 — Event Hash); CAST and Ephemeral Broadcasts",
+  "notes": "The CAST is sent immediately after the PUSH. This relies on the implementation processing packets in order. Implementations that process packets asynchronously may ACK the PUSH before handling the CAST; such implementations SHOULD document this limitation. Event-hash STALE_AT is optional at Level 1–2 but MUST be supported at Level 3.",
+  "steps": [
+    {
+      "action": "establish_session"
+    },
+    {
+      "action": "send",
+      "signal": "PUSH",
+      "flags": ["REQUIRES_ACK"],
+      "payload": { "alert": "temperature-critical" },
+      "_stale_at": {
+        "type": "event",
+        "topic": "conformance.test.reset"
+      },
+      "comment": "STALE_AT type=10: stale when topic 'conformance.test.reset' is CASTed."
+    },
+    {
+      "action": "send",
+      "signal": "CAST",
+      "payload": {
+        "topic": "conformance.test.reset",
+        "data": { "reason": "conformance-suite-triggered-reset" }
+      },
+      "comment": "Immediately CAST the topic that invalidates the PUSH above."
+    },
+    {
+      "action": "expect_silence",
+      "timeout_ms": 700,
+      "comment": "No NUDGE MUST be sent. The PUSH was invalidated by the matching CAST (spec §10 — Event Hash)."
+    }
+  ]
+}
