@@ -1,6 +1,6 @@
 'use strict';
 
-const { SIGNAL_NAME } = require('../constants');
+const { SIGNAL_NAME } = require('./constants');
 
 // --- Connection ---
 

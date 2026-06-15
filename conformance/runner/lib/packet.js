@@ -1,7 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
-const { MAGIC, VERSION, SIGNAL, FLAG } = require('./constants');
+const { MAGIC, VERSION, SIGNAL, FLAG } = require('./lib/constants');
 
 // --- UUID helpers ---
 

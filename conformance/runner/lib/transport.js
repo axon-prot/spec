@@ -2,7 +2,7 @@
 
 const net          = require('net');
 const EventEmitter = require('events');
-const { tryFrame, parsePacket } = require('../packet');
+const { tryFrame, parsePacket } = require('./packet');
 
 /**
  * Bidirectional AXON transport supporting tcp:// and ws:// endpoints.

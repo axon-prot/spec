@@ -4,7 +4,7 @@
 const fs   = require('fs');
 const path = require('path');
 
-async function main() {
+async function main() { // eslint-disable-line require-await
   const argv = require('minimist')(process.argv.slice(2), {
     string:  ['endpoint', 'level', 'timeout', 'report', 'filter'],
     boolean: ['verbose', 'no-color', 'help'],
@@ -51,10 +51,12 @@ Examples
   // --- Initialise XXH3-64 ---
   let h3_64;
   try {
-    const xxhash = await require('xxhash-wasm')();
-    h3_64 = xxhash.h3_64;
+    const { xxh3 } = require('@node-rs/xxhash');
+    // Wrap to return a lowercase hex string, matching the interface expected
+    // by packet.js and executor.js.
+    h3_64 = buf => xxh3.xxh64(buf).toString(16).padStart(16, '0');
   } catch (err) {
-    console.error('Fatal: failed to initialise xxhash-wasm:', err.message);
+    console.error('Fatal: failed to load @node-rs/xxhash:', err.message);
     console.error('Run `npm install` inside conformance/runner/ first.');
     process.exit(1);
   }
@@ -87,8 +89,8 @@ Examples
   }
 
   // --- Run ---
-  const { Executor } = require('./executor');
-  const { Reporter } = require('./reporter');
+  const { Executor } = require('./lib/executor');
+  const { Reporter } = require('./lib/reporter');
 
   const executor = new Executor(argv.endpoint, h3_64);
   const reporter = new Reporter({ verbose: argv.verbose, noColor: argv['no-color'] });
